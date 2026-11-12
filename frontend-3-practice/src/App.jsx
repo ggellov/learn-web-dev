@@ -1,57 +1,117 @@
-// App — корневой компонент приложения.
-//
-// ЗАДАНИЕ
-// --------
-// Перенесите свою страницу выбора даты и времени из нативного JS
-// на React. У вас уже есть:
-//   - готовая вёрстка (HTML);
-//   - готовые стили (CSS);
-//   - рабочий код на нативном JS (валидация дат, рендер календаря,
-//     обработчики кликов, выбор слота).
-//
-// Теперь нужно то же самое сделать в React.
-//
-// ЧТО НУЖНО СДЕЛАТЬ
-// ------------------
-// 1. Разбить страницу на компоненты. Как именно — решайте сами.
-//    Обычно выделяют: шапку, подвал, календарь, сетку слотов,
-//    нижнюю панель.
-//
-// 2. Перенести вёрстку из HTML в JSX. Стили оставить как есть,
-//    просто положить их в тот же проект (например, в src/styles/
-//    или рядом с компонентами).
-//
-// 3. Заменить нативное состояние (переменные + прямые манипуляции
-//    с DOM) на useState. Какие именно данные должны жить в состоянии —
-//    подумайте сами. Скорее всего: текущий месяц, выбранный день,
-//    выбранное время, массив слотов.
-//
-// 4. Рендер календаря и слотов делать через JSX и .map(),
-//    без innerHTML и querySelector.
-//
-// 5. Обработчики кликов — через onClick прямо в JSX,
-//    без addEventListener.
-//
-// 6. Функции для работы с датами, которые вы уже написали
-//    на нативном JS (построение сетки календаря, сравнение дат,
-//    проверка «не раньше сегодня»), можно переиспользовать.
-//    Они чистые — не зависят от React. Создайте файл
-//    src/utils/date.js и перенесите их туда.
-//
-//
-// ПОДСКАЗКА
-// ---------
-// Если что-то не работает или непонятно, как перевести нативный
-// код на React — вернитесь к лекции. Там разбирались все
-// основные приёмы: состояние, пропсы, рендер списков, колбэки.
-//
-// Ниже — пустой каркас. Здесь можно начать писать.
+// App — страница «Выбор даты и времени».
+// Здесь живёт всё состояние; дочерние компоненты только рисуют
+// то, что им передали, и сообщают о кликах через колбэки.
+import { useState } from "react";
+import "./styles/booking.css";
+import Header from "./components/Header.jsx";
+import BookingSteps from "./components/BookingSteps.jsx";
+import Calendar from "./components/Calendar.jsx";
+import TimeSlots from "./components/TimeSlots.jsx";
+import BookingBottomBar from "./components/BookingBottomBar.jsx";
+import Footer from "./components/Footer.jsx";
+import { getToday } from "./utils/date";
+import { getSlotsForDay, findNearestFreeDate } from "./data/slots";
+
+const TODAY = getToday();
+
+// По умолчанию — сегодня, а если сегодня всё занято — ближайший свободный день.
+const DEFAULT_DAY = findNearestFreeDate(TODAY) || TODAY;
 
 function App() {
+  const [currentMonth, setCurrentMonth] = useState(DEFAULT_DAY.month);
+  const [currentYear, setCurrentYear] = useState(DEFAULT_DAY.year);
+  const [selectedDay, setSelectedDay] = useState(DEFAULT_DAY);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [slots, setSlots] = useState(() => getSlotsForDay(DEFAULT_DAY));
+  const [isSaved, setIsSaved] = useState(false);
+
+  function selectDate(date) {
+    setSelectedDay(date);
+    setSelectedTime(null); // время другого дня здесь недействительно
+    setSlots(getSlotsForDay(date));
+    setIsSaved(false);
+  }
+
+  function handleDayClick(day) {
+    selectDate({ day, month: currentMonth, year: currentYear });
+  }
+
+  function handleSlotClick(time) {
+    setSelectedTime(time);
+    setIsSaved(false);
+  }
+
+  function changeMonth(step) {
+    // new Date сам перейдёт через декабрь/январь и поменяет год.
+    const date = new Date(currentYear, currentMonth + step, 1);
+    setCurrentMonth(date.getMonth());
+    setCurrentYear(date.getFullYear());
+  }
+
+  const nearestDate = findNearestFreeDate({
+    day: selectedDay.day + 1,
+    month: selectedDay.month,
+    year: selectedDay.year,
+  });
+
+  function handleShowNearest() {
+    if (!nearestDate) return;
+    setCurrentMonth(nearestDate.month);
+    setCurrentYear(nearestDate.year);
+    selectDate(nearestDate);
+  }
+
+  function handleNext() {
+    if (!selectedTime) return;
+    // Страницы контактов пока нет — сохраняем выбор для следующего шага.
+    try {
+      localStorage.setItem("booking", JSON.stringify({ date: selectedDay, time: selectedTime }));
+    } catch {
+      // Хранилище может быть недоступно — для этой страницы это не критично.
+    }
+    setIsSaved(true);
+  }
+
   return (
-    <div>
-      {/* Начните отсюда. Например, разметьте .page, добавьте шапку,
-            основную область, подвал. */}
+    <div className="page">
+      <Header />
+      <BookingSteps currentStep={3} />
+
+      <main className="booking">
+        <div className="booking__heading">
+          <a className="booking__back" href="#">← Назад</a>
+          <h1 className="booking__title">Выберите дату и время</h1>
+        </div>
+
+        <div className="booking__picker">
+          <Calendar
+            year={currentYear}
+            month={currentMonth}
+            selectedDay={selectedDay}
+            today={TODAY}
+            onDayClick={handleDayClick}
+            onPrevMonth={() => changeMonth(-1)}
+            onNextMonth={() => changeMonth(1)}
+          />
+          <TimeSlots
+            date={selectedDay}
+            slots={slots}
+            selectedTime={selectedTime}
+            nearestDate={nearestDate}
+            onSlotClick={handleSlotClick}
+            onShowNearest={handleShowNearest}
+          />
+        </div>
+
+        <BookingBottomBar
+          date={selectedDay}
+          selectedTime={selectedTime}
+          isSaved={isSaved}
+          onNext={handleNext}
+        />
+      </main>
+
+      <Footer />
     </div>
   );
 }
