@@ -1,0 +1,593 @@
+/* ===== Переменные из макета ===== */
+:root {
+  --color-text: #333333;
+  --color-muted: #808080;
+  --color-light: #999999;
+  --color-nav: #606666;
+  --color-page: #f7f7f5;
+  --color-white: #ffffff;
+  --color-day: #ededed;
+  --color-day-hover: #dcdcda;
+  --color-busy: #f5f5f3;
+  --color-border: #f0f1f0;
+  --color-line: #e4e4e1;
+  --color-step: #ecece8;
+  --color-arrow: #f0f0f0;
+  --color-dark-hover: #1a1a1a;
+
+  --color-footer: #333333;
+  --color-footer-text: #a0a5a5;
+  --color-footer-light: #d0d5d5;
+  --color-footer-muted: #808585;
+  --color-footer-line: #3d4243;
+
+  --font-main: "Inter", Arial, sans-serif;
+  --font-ui: Arial, "Helvetica Neue", sans-serif;
+  --font-logo: "DM Sans", Arial, sans-serif;
+
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Базовые стили ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+p,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.page {
+  max-width: 1024px;
+  margin: 0 auto;
+  background-color: var(--color-page);
+  color: var(--color-text);
+  font-family: var(--font-main);
+}
+
+/* ===== Шапка ===== */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 48px;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logo {
+  display: inline-block;
+  padding: 4px 8px;
+  font-family: var(--font-logo);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 31px;
+  letter-spacing: 0.3px;
+  color: #7f7f7f;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.logo:hover {
+  color: var(--color-text);
+}
+
+.site-nav__list {
+  display: flex;
+  gap: 24px;
+}
+
+.site-nav__link {
+  display: block;
+  padding: 8px 4px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--color-nav);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.site-nav__link:hover {
+  color: var(--color-text);
+}
+
+/* ===== Шаги записи ===== */
+.booking-steps {
+  padding: 20px 48px;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.booking-steps__list {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.booking-steps__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--color-muted);
+}
+
+.booking-steps__number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-step);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+.booking-steps__item--done .booking-steps__number,
+.booking-steps__item--current .booking-steps__number {
+  background-color: var(--color-text);
+  color: var(--color-white);
+}
+
+.booking-steps__item--current .booking-steps__label {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.booking-steps__line {
+  width: 32px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--color-line);
+}
+
+.booking-steps__line--done {
+  background-color: var(--color-text);
+}
+
+/* ===== Основная часть ===== */
+.booking {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 40px 48px 56px;
+}
+
+.booking__heading {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.booking__back {
+  font-size: 14px;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.booking__back:hover {
+  color: var(--color-text);
+}
+
+.booking__title {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.booking__picker {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+/* ===== Календарь ===== */
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 516px;
+  padding: 24px;
+  background-color: var(--color-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-ui);
+}
+
+.calendar__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar__month {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 23px;
+}
+
+.calendar__controls {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar__arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background-color: var(--color-arrow);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.calendar__arrow:hover {
+  background-color: var(--color-day-hover);
+}
+
+.calendar__arrow-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.calendar__weekdays,
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 60px);
+  column-gap: 8px;
+}
+
+.calendar__weekday {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+}
+
+.calendar__days {
+  row-gap: 6px;
+}
+
+.calendar__day {
+  height: 36px;
+  border-radius: 18px;
+  background-color: var(--color-day);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.calendar__day:hover {
+  background-color: var(--color-day-hover);
+}
+
+.calendar__day--today {
+  box-shadow: inset 0 0 0 1px var(--color-text);
+}
+
+.calendar__day--selected,
+.calendar__day--selected:hover {
+  background-color: var(--color-text);
+  color: var(--color-white);
+}
+
+.calendar__day--disabled,
+.calendar__day--disabled:hover {
+  background-color: transparent;
+  font-weight: 400;
+  color: var(--color-light);
+  cursor: default;
+}
+
+/* ===== Слоты времени ===== */
+.time-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 380px;
+  padding: 24px;
+  background-color: var(--color-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-ui);
+}
+
+.time-slots__title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 23px;
+}
+
+.time-slots__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+  row-gap: 12px;
+}
+
+.time-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-white);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.time-slot:hover {
+  border-color: var(--color-text);
+  box-shadow: var(--shadow-hover);
+}
+
+.time-slot__time {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.time-slot__status {
+  font-size: 10px;
+  line-height: 11px;
+}
+
+.time-slot--selected,
+.time-slot--selected:hover {
+  border-color: var(--color-text);
+  background-color: var(--color-text);
+  color: var(--color-white);
+}
+
+.time-slot--busy,
+.time-slot--busy:hover {
+  border-color: var(--color-busy);
+  background-color: var(--color-busy);
+  color: var(--color-light);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ===== Нижняя строка и кнопка ===== */
+.booking__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.booking__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.booking__services {
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--color-muted);
+}
+
+.booking__datetime {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--color-text);
+}
+
+.booking__datetime--empty {
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 24px;
+  border-radius: 8px;
+  background-color: var(--color-text);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.button:hover {
+  background-color: var(--color-dark-hover);
+  box-shadow: var(--shadow-hover);
+}
+
+.button:disabled,
+.button:disabled:hover {
+  background-color: var(--color-step);
+  box-shadow: none;
+  color: #afafaa;
+  cursor: not-allowed;
+}
+
+/* ===== Пустое состояние слотов ===== */
+.time-slots__grid--empty {
+  display: block;
+}
+
+.time-slots__empty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--color-page);
+}
+
+.time-slots__empty-title {
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.time-slots__empty-text {
+  font-family: var(--font-main);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* ===== Подвал ===== */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 64px 48px;
+  background-color: var(--color-footer);
+  font-family: var(--font-ui);
+}
+
+.site-footer__columns {
+  display: flex;
+  gap: 40px;
+}
+
+.site-footer__column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.logo--footer:hover {
+  color: var(--color-white);
+}
+
+.site-footer__text {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-footer-text);
+}
+
+.site-footer__heading {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 15px;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+.site-footer__contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-style: normal;
+}
+
+.site-footer__contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-footer-light);
+}
+
+.site-footer__phone {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.site-footer__phone:hover {
+  color: var(--color-footer-light);
+}
+
+.site-footer__icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.33;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-footer__hours {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.site-footer__text-light {
+  font-size: 14px;
+  color: var(--color-footer-light);
+}
+
+.site-footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-footer-line);
+}
+
+.site-footer__copyright,
+.site-footer__policy {
+  font-size: 13px;
+  color: var(--color-footer-muted);
+}
+
+.site-footer__policy {
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.site-footer__policy:hover {
+  color: var(--color-white);
+}
